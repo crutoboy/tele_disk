@@ -1,7 +1,4 @@
 import os
-# import datetime
-# from xml.dom import minidom
-# import xml.etree.ElementTree as xml
 
 import telebot
 from telebot import types
@@ -114,7 +111,6 @@ def create_new_folder (message, rename: bool = False):
     dst = file_working.normpath(f'{dir.text}/{message.text}')
     if rename:
         dst = f"{'/'.join(dir.text.split('/')[:-1])}/{message.text}"
-    # print('dst_short', dst)
     if message.text == '/cansel':
         bot.send_message(message.from_user.id, 'Действие отменено')
     elif os.path.isdir(file_working.get_path_to_file(dst, space, message.from_user.id)):
@@ -122,16 +118,11 @@ def create_new_folder (message, rename: bool = False):
         bot.register_next_step_handler(message, create_new_folder)
     else:
         if rename:
-            # print('old', file_working.get_path_to_file(dir, space, message.from_user.id))
-            # print('dst', file_working.get_path_to_file(dst, space, message.from_user.id))
-            os.rename(file_working.get_path_to_file(dir, space, message.from_user.id),
+            os.rename(file_working.get_path_to_file(dir.text, space, message.from_user.id),
                       file_working.get_path_to_file(dst, space, message.from_user.id))
         else:
-            # print(space)
-            # print('dst', file_working.get_path_to_file(dst, space, message.from_user.id))
             os.mkdir(file_working.get_path_to_file(dst, space, message.from_user.id))
         dir.text = dst
-        # return None
         db_working.save_db(root)
         tmp = 'Папка создана'
         if rename:
@@ -142,46 +133,30 @@ def create_new_folder (message, rename: bool = False):
 
 @bot.message_handler(content_types=['document', 'audio', 'video', 'voice', 'photo'])
 def addfile(message):
-    
     path, space = db_working.get_database(message.from_user.id)[1:3]
-    print(1)
     if message.content_type == 'photo':
         file_info = bot.get_file(message.photo[-1].file_id)
         file_name = file_info.file_path.split('/')[-1]
     else:
         file_info = bot.get_file(message.document.file_id)
         file_name = message.document.file_name
-    print(2)
     downloaded_file = bot.download_file(file_info.file_path)
-    print(3)
     absolute_path = f'{file_working.get_path_to_file(path.text, space, message.from_user.id)}/{file_name}'
-    print(4)
     absolute_path, file_name = file_working.repeat_name_file(absolute_path)
-    print(5)
     with open(absolute_path, 'wb') as f:
         f.write(downloaded_file)
-    print(6)
-    print(message)
-    print(file_working.normpath(f"{path.text}/{file_name}"))
-    print(path.text)
-    print(file_name)
     bot.reply_to(message, f'Файл был загружен по пути: {file_working.normpath(f"{path.text}/{file_name}")}')
+    # bot.edit_message_text('загружено', message.from_user.id, message.message_id)
     # bot.send_message(message.from_user.id, f'Файл был загружен по пути: {file_working.normpath(f"{path.text}/{file_name}")}', None, reply_to_message_id = message.message_id)
 
-# @bot.message_handler(content_types=['photo'])
-# def addphoto(message):
-#     path, space = db_working.get_database(message.from_user.id)[1:3]
-#     file_info = bot.get_file(message.photo[-1].file_id)
-#     file_name = file_info.file_path.split('/')[-1]
-#     downloaded_file = bot.download_file(file_info.file_path)
 
-#     with open(f'{file_working.get_path_to_file(path.text, space, message.from_user.id)}/{file_name}', 'wb') as new_file:
-#         new_file.write(downloaded_file)
-#     bot.reply_to(message, f'Файл был загружен по пути: {file_working.normpath(f"{path.text}/{file_name}")}')
+
+
+
 
 
 if __name__ == '__main__':
     os.chdir(root_path)
     db_working.check_db()
-    # bot.polling(non_stop=True, interval=0)
-    bot.infinity_polling()
+    bot.polling(non_stop=True, interval=0)
+    # bot.infinity_polling()
