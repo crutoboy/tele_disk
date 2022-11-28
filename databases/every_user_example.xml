@@ -1,0 +1,17 @@
+<dataroot>
+    <!--
+    <User>
+		<ID></ID>
+		<NickName></NickName>
+		<FirstName></FirstName>
+		<LastName></LastName>
+		<DateAdd></DateAdd>
+		<PersonDir>/</PersonDir>
+		<FileSpace></FileSpace>
+		<FavoritesDir/>
+		<VisibleFiles>yes</VisibleFiles>
+		<AdminRights>no</AdminRights>
+	</User>
+    это структкра БД. писать её самой не нужно, система создаст всё автоматически
+    -->
+</dataroot>
