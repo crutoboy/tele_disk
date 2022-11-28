@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<dataroot>
+	<User>
+		<ID>1461783908</ID>
+		<NickName>crutoboy</NickName>
+		<FirstName>Иван</FirstName>
+		<LastName>Александров</LastName>
+		<DateAdd>20.10.2022 16:21:29</DateAdd>
+		<PersonDir>/Temp</PersonDir>
+		<FileSpace>global</FileSpace>
+		<FavoritesDir/>
+		<VisibleFiles>yes</VisibleFiles>
+		<AdminRights>no</AdminRights>
+	</User>
+	<User>
+		<ID>5049808855</ID>
+		<NickName>Sergey_3737</NickName>
+		<FirstName>Sergei</FirstName>
+		<LastName>None</LastName>
+		<DateAdd>28.11.2022 21:15:30</DateAdd>
+		<PersonDir>/</PersonDir>
+		<FileSpace>global</FileSpace>
+		<FavoritesDir/>
+		<VisibleFiles>yes</VisibleFiles>
+		<AdminRights>no</AdminRights>
+	</User>
+</dataroot>
