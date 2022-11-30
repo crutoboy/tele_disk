@@ -54,7 +54,9 @@ def open_new_explorer (message):
     if dir.text != '/' and tmp and (space or admin):
         btn = types.InlineKeyboardButton(text = 'Удалить текущую папку', callback_data = 'dir|remove')
         keaboard.add(btn)
-    tmp1 = bot.send_message(message.from_user.id, dir.text, reply_markup = keaboard)
+    
+    callback = {True: 'личное', False: 'общее'}
+    tmp1 = bot.send_message(message.from_user.id, f'({callback[space]}) {dir.text}', reply_markup = keaboard)
 
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     if space: tmp = '🏢'
@@ -67,7 +69,7 @@ def open_new_explorer (message):
     if visible: tmp = 'Скрыть файлы'
     else: tmp = 'Отобразить файлы'
     markup.add(types.KeyboardButton(tmp))
-    tmp2 = bot.send_message(message.from_user.id, dir.text, reply_markup = markup)
+    tmp2 = bot.send_message(message.from_user.id, f'({callback[space]}) {dir.text}', reply_markup = markup)
 
     dict_with_active_explorers.update([(message.from_user.id, [tmp1.message_id, tmp2.message_id])])
 
