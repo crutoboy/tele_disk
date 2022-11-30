@@ -24,6 +24,8 @@ def start(message):
 
 @bot.message_handler(commands=['help'])
 def help(message):
+    # print(message.text)
+    # print(message.reply_to_message.text)
     bot.send_message(message.from_user.id, help_message)
 
 
@@ -133,11 +135,14 @@ def create_new_folder (message, rename: bool = False):
 
 @bot.message_handler(content_types=['document', 'audio', 'video', 'voice', 'photo'])
 def addfile(message):
+    bot.delete_message(message.from_user.id, message.id)
     path, space = db_working.get_database(message.from_user.id)[1:3]
     if message.content_type == 'photo':
+        bot_msg = bot.send_photo(message.from_user.id, message.photo[-1].file_id)
         file_info = bot.get_file(message.photo[-1].file_id)
         file_name = file_info.file_path.split('/')[-1]
     else:
+        bot_msg = bot.send_document(message.from_user.id, message.document.file_id)
         file_info = bot.get_file(message.document.file_id)
         file_name = message.document.file_name
     downloaded_file = bot.download_file(file_info.file_path)
@@ -145,8 +150,10 @@ def addfile(message):
     absolute_path, file_name = file_working.repeat_name_file(absolute_path)
     with open(absolute_path, 'wb') as f:
         f.write(downloaded_file)
-    bot.reply_to(message, f'Файл был загружен по пути: {file_working.normpath(f"{path.text}/{file_name}")}')
+    # bot.reply_to(message, f'Файл был загружен по пути: {file_working.normpath(f"{path.text}/{file_name}")}')
     # bot.edit_message_text('загружено', message.from_user.id, message.message_id)
+    callback = {True: 'личное', False: 'общее'}
+    bot.edit_message_caption(f'🆗({callback[space]}) {file_working.normpath(f"{path.text}/{file_name}")}', message.from_user.id, bot_msg.id)
     # bot.send_message(message.from_user.id, f'Файл был загружен по пути: {file_working.normpath(f"{path.text}/{file_name}")}', None, reply_to_message_id = message.message_id)
 
 
