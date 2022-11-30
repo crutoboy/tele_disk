@@ -150,11 +150,8 @@ def addfile(message):
     absolute_path, file_name = file_working.repeat_name_file(absolute_path)
     with open(absolute_path, 'wb') as f:
         f.write(downloaded_file)
-    # bot.reply_to(message, f'Файл был загружен по пути: {file_working.normpath(f"{path.text}/{file_name}")}')
-    # bot.edit_message_text('загружено', message.from_user.id, message.message_id)
     callback = {True: 'личное', False: 'общее'}
     bot.edit_message_caption(f'🆗({callback[space]}) {file_working.normpath(f"{path.text}/{file_name}")}', message.from_user.id, bot_msg.id)
-    # bot.send_message(message.from_user.id, f'Файл был загружен по пути: {file_working.normpath(f"{path.text}/{file_name}")}', None, reply_to_message_id = message.message_id)
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -207,5 +204,4 @@ def callback_worker(call):
 if __name__ == '__main__':
     os.chdir(root_path)
     db_working.check_db()
-    # bot.polling(non_stop=True, interval=0)
     bot.infinity_polling()
