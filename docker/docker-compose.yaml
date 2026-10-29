@@ -7,3 +7,15 @@ services:
     env_file:
       - ../.env
     restart: unless-stopped
+  tele-disk-db:
+    image: postgres
+    restart: always
+    # set shared memory limit when using docker compose
+    shm_size: 128mb
+    env_file:
+      - ../.env
+    volumes:
+      - tele-disk-postgres:/var/lib/postgresql
+
+volumes:
+  tele-disk-postgres:
